@@ -1,14 +1,199 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml/1" fx:controller="timotei.FXMLDocumentController">
-    <children>
-        <Button layoutX="126" layoutY="90" text="Click Me!" onAction="#handleButtonAction" fx:id="button" />
-        <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" fx:id="label" />
-    </children>
+
+<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1156.0" prefHeight="771.0" prefWidth="1156.0" scaleShape="false" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="timotei.FXMLDocumentController">
+   <children>
+      <TabPane layoutY="76.0" prefHeight="697.0" prefWidth="1162.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab closable="false" text="Kartta">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Separator layoutX="759.0" orientation="VERTICAL" prefHeight="668.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="759.0" AnchorPane.topAnchor="0.0" />
+                        <TextField fx:id="addToMapSearch" layoutX="786.0" layoutY="37.0" prefWidth="150.0" promptText="Search smartpost" />
+                        <ComboBox fx:id="addToMapCombo" layoutX="786.0" layoutY="62.0" prefWidth="150.0" promptText="Choose from here" />
+                        <Button fx:id="addToMapButton" layoutX="980.0" layoutY="37.0" mnemonicParsing="false" onAction="#addToMapAction" prefHeight="25.0" prefWidth="80.0" text="Add to map" />
+                        <Button fx:id="clearMapButton" layoutX="980.0" layoutY="62.0" mnemonicParsing="false" onAction="#clearMapAction" prefHeight="25.0" prefWidth="80.0" text="Clear map" />
+                        <TextField fx:id="sendFromSearch" layoutX="786.0" layoutY="298.0" prefWidth="150.0" promptText="Search smartpost" />
+                        <ComboBox fx:id="sendFromCombo" layoutX="786.0" layoutY="323.0" prefWidth="150.0" promptText="Choose from here" />
+                        <TextField fx:id="destinationSearch" layoutX="969.0" layoutY="298.0" prefWidth="150.0" promptText="Search smartpost" />
+                        <ComboBox fx:id="destinationCombo" layoutX="969.0" layoutY="323.0" prefWidth="150.0" promptText="Choose from here" />
+                        <Label layoutX="793.0" layoutY="266.0" text="Send from" />
+                        <Label layoutX="969.0" layoutY="266.0" text="Destination" />
+                        <ListView fx:id="availablePacketsListView" layoutX="791.0" layoutY="383.0" prefHeight="200.0" prefWidth="141.0" />
+                        <ListView fx:id="sendPacketsListView" layoutX="990.0" layoutY="383.0" prefHeight="200.0" prefWidth="141.0" />
+                        <Button fx:id="addToSendButton" layoutX="946.0" layoutY="421.0" mnemonicParsing="false" onAction="#addToSendAction" text="&gt;&gt;" />
+                        <Button fx:id="removeFromSendButton" layoutX="945.0" layoutY="471.0" mnemonicParsing="false" onAction="#removeFromSendAction" text="&lt;&lt;" />
+                        <Button fx:id="sendShipmentButton" layoutX="795.0" layoutY="600.0" mnemonicParsing="false" onAction="#sendShipmentAction" prefHeight="59.0" prefWidth="338.0" text="Send shipment" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab closable="false" text="Esineet">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView layoutX="34.0" layoutY="67.0" prefHeight="485.0" prefWidth="484.0" />
+                        <Label layoutX="104.0" layoutY="14.0" text="Varasto">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Separator layoutX="579.0" orientation="VERTICAL" prefHeight="668.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="579.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="769.0" layoutY="14.0" text="Uusi paketti">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="packetTypeCombo" layoutX="662.0" layoutY="122.0" prefWidth="150.0" promptText="Paketin tyyppi" />
+                        <TextField fx:id="packetOwnerType" layoutX="663.0" layoutY="173.0" promptText="Omistaja" />
+                        <Label layoutX="664.0" layoutY="101.0" prefHeight="17.0" prefWidth="148.0" text="Valitse paketin tyyppi:">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="646.0" layoutY="308.0" text="Paketin tiedot" />
+                        <Button fx:id="acceptAndAddButton" layoutX="980.0" layoutY="424.0" mnemonicParsing="false" onAction="#acceptAndAddAction" prefHeight="171.0" prefWidth="150.0" text="Hyväksy ja lisää">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="removePacketButton" layoutX="106.0" layoutY="568.0" mnemonicParsing="false" onAction="#removePacketAction" prefHeight="55.0" prefWidth="118.0" text="Poista" />
+                        <Button fx:id="editPacketButton" layoutX="325.0" layoutY="568.0" mnemonicParsing="false" onAction="#editPacketAction" prefHeight="55.0" prefWidth="118.0" text="Muokkaa" />
+                        <ListView fx:id="packetInfoListView" layoutX="612.0" layoutY="352.0" prefHeight="297.0" prefWidth="346.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab closable="false" text="Tapahtumaloki">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="eventListView" layoutX="19.0" layoutY="70.0" prefHeight="579.0" prefWidth="538.0" />
+                        <Label layoutX="62.0" layoutY="25.0" prefHeight="32.0" prefWidth="172.0" text="Tapahtumat">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Separator layoutX="615.0" layoutY="43.0" orientation="VERTICAL" prefHeight="668.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="578.0" AnchorPane.topAnchor="0.0" />
+                        <ListView fx:id="eventInfoListView" layoutX="598.0" layoutY="71.0" prefHeight="581.0" prefWidth="547.0" />
+                        <Label layoutX="616.0" layoutY="25.0" prefHeight="32.0" prefWidth="172.0" text="Tarkat tiedot">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Reklamaatiot">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="352.0" prefWidth="587.0">
+                     <children>
+                        <ListView fx:id="ReclamationListView" layoutX="78.0" layoutY="116.0" prefHeight="466.0" prefWidth="373.0" />
+                        <Label layoutX="78.0" layoutY="63.0" prefHeight="35.0" prefWidth="96.0" text="Seuraa">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="733.0" layoutY="63.0" prefHeight="35.0" prefWidth="96.0" text="Tee uusi">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="reclamationShipmentSearch" layoutX="659.0" layoutY="133.0" promptText="LähetysID" />
+                        <Button fx:id="checkShipmentButton" layoutX="838.0" layoutY="133.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="150.0" text="Tarkista lähetysID" />
+                        <Label layoutX="659.0" layoutY="167.0" prefHeight="25.0" prefWidth="151.0" text="LähetysID OK/NOT " />
+                        <Label layoutX="659.0" layoutY="259.0" prefHeight="35.0" prefWidth="169.0" text="Anna lisätietoja">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <TextArea fx:id="reclamationDescriptionField" layoutX="659.0" layoutY="314.0" prefHeight="250.0" prefWidth="374.0" promptText="Kirjoita tapahtuman kuvaus" />
+                        <CheckBox fx:id="contactMeCheckBox" layoutX="659.0" layoutY="582.0" mnemonicParsing="false" text="Toivon yhteydenottoa">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </CheckBox>
+                        <Separator layoutX="550.0" layoutY="58.0" orientation="VERTICAL" prefHeight="668.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="578.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Stressitasot">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="employeeStressListView" layoutX="57.0" layoutY="92.0" prefHeight="488.0" prefWidth="367.0" />
+                        <Label layoutX="57.0" layoutY="52.0" prefHeight="13.0" prefWidth="205.0" text="Työntekijät">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Separator layoutX="591.0" layoutY="66.0" orientation="VERTICAL" prefHeight="668.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="578.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="690.0" layoutY="57.0" text="Kuukauden viskelijä">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+          <Tab text="Tilastot">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <DatePicker fx:id="statisticDatePicker" layoutX="111.0" layoutY="155.0" onAction="#statisticDateAction" />
+                        <Label layoutX="740.0" layoutY="64.0" text="Päivän tilastot">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="statisticTypeComboBox" layoutX="739.0" layoutY="136.0" onAction="#statisticTypeAction" prefWidth="150.0" promptText="Näytettävä tilasto" />
+                        <ListView fx:id="statisticListView" layoutX="612.0" layoutY="186.0" prefHeight="457.0" prefWidth="523.0" />
+                        <Separator layoutX="536.0" layoutY="80.0" orientation="VERTICAL" prefHeight="668.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="578.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <MenuBar layoutY="2.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
 </AnchorPane>
