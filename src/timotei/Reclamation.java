@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 package timotei;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  *
@@ -24,6 +26,40 @@ public class Reclamation {
         packageID = pID;
         info = i;
         time = new java.util.Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH);
+        //-----------------------
+        Connection c = null;
+        PreparedStatement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:timotei.sqlite3");
+            c.setAutoCommit(false);
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        System.out.println("Opened database successfully");
+
+        try {
+            String sql = "INSERT INTO Reklamaatiot "
+                    + "VALUES (?, ?, ?, ?);";
+
+            stmt = c.prepareStatement(sql);
+            stmt.setString(1, rID);
+            stmt.setString(2, pID);
+            stmt.setString(3, info);
+            stmt.setString(4, format.format(time));
+            stmt.executeUpdate(sql);
+
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        System.out.println("Records into Reklamaatiot created successfully");
+        //--------------------------
         
     }
 

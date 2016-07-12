@@ -16,11 +16,9 @@ public class ReclamationHandler {
     
     // Singleton-konstruktori
     private static ReclamationHandler instance = null;
-
     protected ReclamationHandler() {
         // Exists only to defeat instantiation.
     }
-
     public static ReclamationHandler getInstance() {
         if (instance == null) {
             instance = new ReclamationHandler();
@@ -34,6 +32,8 @@ public class ReclamationHandler {
     public void addReclamation(String rID, String pID, String i){
         
         reclamationList.add(new Reclamation(rID, pID, i));
+        
+        
         
     }
     
@@ -69,6 +69,4 @@ public class ReclamationHandler {
         System.err.println("Haettua parametria ei löytynyt.");
         return null;
     }
-    
-    
 }

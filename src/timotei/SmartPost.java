@@ -59,9 +59,7 @@ public class SmartPost {
     public String getCity() {
         return city;
     }
-
-
-
+    
     public boolean isHaspacket() {
         return haspacket;
     }
@@ -93,7 +91,7 @@ public class SmartPost {
     
     }
     
-        public GeoPoint getGp() {
+    public GeoPoint getGp() {
         return gp;
     }
     

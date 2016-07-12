@@ -21,7 +21,7 @@ public class SmartPostHandler {
     // Singleton-konstruktori
     private static SmartPostHandler instance = null;
     protected SmartPostHandler() {
-        // Exists only to defeat instantiation.
+        // Exists only to defeat instantiation.        
     }
     public static SmartPostHandler getInstance() {
         if (instance == null) {
@@ -34,7 +34,7 @@ public class SmartPostHandler {
     // Etsii annettua merkkijonoa vastaavan pakettiautomaatin. Nimet muotoa "Pakettiautomaatti, K-citymarket Päiväranta"
     public ArrayList findSmartPost(String search){
         
-        ArrayList<SmartPost> matchingSmartPostList = new ArrayList();
+        ArrayList<String> matchingSmartPostList = new ArrayList();
         
         // Alustetaan iteraattori ja SmartPost-olio.
         Iterator itr = smartPostList.iterator();
@@ -45,7 +45,7 @@ public class SmartPostHandler {
         while(itr.hasNext()){
             sp = (SmartPost)itr.next();
             if(sp.getName().contains(search))
-                matchingSmartPostList.add(sp);
+                matchingSmartPostList.add(sp.getName());
         }
         
         return matchingSmartPostList;
@@ -62,7 +62,7 @@ public class SmartPostHandler {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Opened database successfully");
+        System.out.println("Opened database successfully for UPDATING SMARTPOST list");
         
         
         try {
@@ -90,8 +90,29 @@ public class SmartPostHandler {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Operation done successfully");
+        System.out.println("SMARTPOSTlist UPDATED successfully");
         
+        
+    }
+    
+    public SmartPost getSmartPostByName(String name){
+        
+        ArrayList<SmartPost> matchingSmartPostList = new ArrayList();
+
+        // Alustetaan iteraattori ja SmartPost-olio.
+        Iterator itr = smartPostList.iterator();
+        SmartPost sp;
+
+        // Käydään läpi kaikki oliot ja tarkistetaan löytyykö nimestä haettu sana
+        // Jos löytyy, lisätään listaan
+        while (itr.hasNext()) {
+            sp = (SmartPost) itr.next();
+            if (sp.getName().contains(name)) {
+                return sp;
+            }
+        }
+
+        return null;
         
     }
     

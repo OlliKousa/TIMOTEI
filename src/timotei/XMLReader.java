@@ -28,6 +28,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import java.sql.*;
+import java.util.Arrays;
 
 /**
  *
@@ -121,7 +122,7 @@ public class XMLReader {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Opened database successfully");
+        System.out.println("Opened database successfully for INSERTING SMARTPOSTS");
         
         PreparedStatement stmt = null;
         
@@ -160,6 +161,7 @@ public class XMLReader {
             Element ePostoffice = (Element) nodePostoffice;
             nodePostoffice = doc.getElementsByTagName("postoffice").item(i);
             
+            
             Node nodeLat = nodes.item(i);
             Element eLat = (Element) nodeLat;
             nodeLat = doc.getElementsByTagName("lat").item(i);
@@ -173,8 +175,12 @@ public class XMLReader {
             String sql = "INSERT INTO Smartposts"
                     + " VALUES (?, ?, ?, ?, ?, ?, ?, 'false');";
             
+            String[] nimiArray = nodePostoffice.getTextContent().split(",");
+            nimiArray = Arrays.copyOfRange(nimiArray, 1, nimiArray.length);
+            String nimi = Arrays.toString(nimiArray).substring(1, Arrays.toString(nimiArray).length()-1);
+            
             stmt = c.prepareStatement(sql);
-            stmt.setString(1, nodePostoffice.getTextContent() );
+            stmt.setString(1, nimi );
             stmt.setString(2, nodeAvailability.getTextContent() );
             stmt.setString(3, nodeAddress.getTextContent() );
             stmt.setString(4, nodePostCode.getTextContent() );
@@ -187,11 +193,13 @@ public class XMLReader {
 
             
         }
+        if(stmt != null)
+            stmt.close();
         
-        stmt.close();
         c.commit();
         c.close();
         
+        System.out.println("SMARTPOSTS INSERTED into database.");
 
     }
 }

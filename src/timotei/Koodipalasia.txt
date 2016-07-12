@@ -134,3 +134,60 @@ CREATE TABLE Smartposts(
 
 
 //        new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Timestamp());
+
+JavaScript-rajapinta
+    document.goToLocation(string, string, string)
+        -Metodi, jonka avulla voidaan piirtää merkki kartalle lähettämällä tietoa pääohjelmasta. 
+         Metodi käsittelee annetun osoitteen ja piirtää merkin löydettyyn kohtaan ja 
+         lisää muut tiedot infoikkunaan (klikkaa piirrettyä merkkiä ja infoikkuna aukeaa).
+        -3 parametria:
+            -Osoite merkkijonona muodossa <katuosoite>, <postinumero> <postitoimipaikka> 
+            -Smartpostin muut tiedot (postin toimipiste ja aukioloajat) merkkijonona
+            -Piirrosmerkin väri merkkijonona
+
+    document.createPath(arraylist, string, int)
+        -Metodi, jonka avulla paketti voidaan lähettää kulkemaan kartalla antamalla sille taulukkona tietoa paketin alku- ja päätepisteistä. Reittiä voidaan erottaa muista määrittämällä sille omanlaisensa väri parametrina ja reitin piirtonopeus riippuu paketin siirtoluokasta.
+        -3 parametria:
+            -ArrayList (tai taulukko String-muodossa), joka pitää sisällään aloitus ja lopetuspisteet reitille muodossa [aloitus lat, aloitus lon, lopetus lat, lopetus lon]
+            -Reitin väri merkkijonona
+            -Paketin siirtoluokka kokonaislukua 1, 2 tai 3
+        -Palauttaa matkan pituuden pisteiden välillä
+    
+    document.deletePaths()
+        -Metodi, jonka avulla on mahdollista poistaa kaikki kartalle piirretyt reitit, mutta ei merkkejä. 
+        -Ei ota parametreja
+
+
+document.goToLocation('Toikansuontie 4, 53505 LAPPEENRANTA', 'Pakettiautomaatti, K-citymarket Lappeenranta ma-pe 8.00 - 21.00, la 8.00 - 18.00, su 12.00 - 18.00', 'BLUE')
+document.goToLocation('Toikansuontie 4, 53505 LAPPEENRANTA', 'Kikkeliskoo', 'BLUE')
+
+
+        // --------------
+        // Paketin tallentaminen tietokantaan. 
+        
+//        PreparedStatement stmt = null;
+//
+//        try {
+//
+//            String sql = "INSERT INTO Paketit"
+//                    + "VALUES (?, ?, ?);";
+//
+//            stmt = c.prepareStatement(sql);
+//
+//            stmt.setString(1, pID);
+//            stmt.setString(2, oID);
+//            stmt.setString(3, String.valueOf(iType));
+//
+//            stmt.executeUpdate(sql);
+//
+//            stmt.close();
+//            c.commit();
+//            c.close();
+//        } catch (Exception e) {
+//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+//            System.exit(0);
+//        }
+//
+//        System.out.println("Record into Package created successfully");
+
+INSERT INTO Paketit (PacketID, AsiakasID, TuoteID) VALUES ('I24324', 'P666', '1' );

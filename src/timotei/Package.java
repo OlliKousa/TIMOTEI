@@ -5,6 +5,8 @@
 package timotei;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -13,67 +15,62 @@ import java.sql.*;
 public class Package {
     
     String packetID;
-    String name;
-    String size;
-    double weight; 
     String ownerID;
     int itemType;
-    boolean fragile;
+
     
-    public Package(int iType, String oID, String pID){
+    public Package(int iType, String oID, String pID, boolean addToDB){
         
         itemType = iType;
         ownerID = oID;
         packetID = pID;
         
-        // Avataan tietokanta
-        Connection c = null;
-        try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:timotei.sqlite3");
-        } catch (ClassNotFoundException | SQLException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
-        System.out.println("Opened database successfully");
-        
-        // Haetaan tietokannasta annetun tuotetyypin tiedot. 
-        try {         
-            c.setAutoCommit(false);
-            Statement stmt = null;
-            stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Tuotetyypit;");
-            while (rs.next()) {
-                name = rs.getString("Nimi");
-                size = rs.getString("Koko");
-                weight = rs.getDouble("Paino");
-                fragile = rs.getBoolean("Fragile");
+        // Uudet paketit lisätään tietokantaan. 
+        if(addToDB){
+            // Avataan tietokanta
+            Connection c = null;
+            try {
+                Class.forName("org.sqlite.JDBC");
+                c = DriverManager.getConnection("jdbc:sqlite:timotei.sqlite3");
+                c.setAutoCommit(false);
+            } catch (ClassNotFoundException | SQLException e) {
+                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                System.exit(0);
             }
-            rs.close();
-            stmt.close();
-            c.close();
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
-        System.out.println("Operation done successfully");   
+            System.out.println("Opened database successfully for INSERTING PACKAGE");
+
+            // --------------
+            // Paketin tallentaminen tietokantaan. 
         
+            PreparedStatement stmt = null;
+
+            try {
+                
+                String sql = "INSERT INTO Paketit (PacketID, AsiakasID, TuoteID)"
+                        + " VALUES (?, ?, ? );";
+
+                stmt = c.prepareStatement(sql);
+
+                stmt.setString(1, pID);
+                stmt.setString(2, oID);
+                stmt.setString(3, ("0" + String.valueOf(iType)));
+                stmt.executeUpdate();
+
+                stmt.close();
+                c.commit();
+                c.close();
+            } catch (Exception e) {
+                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                System.exit(0);
+            }
+
+            System.out.println("Record into Package created successfully");
+            
+        }
     }
 
     public String getPacketID() {
         return packetID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public double getWeight() {
-        return weight;
     }
 
     public String getOwnerID() {
@@ -82,13 +79,6 @@ public class Package {
 
     public int getItemType() {
         return itemType;
-    }
-
-    public boolean isFragile() {
-        return fragile;
-    }
-    
-    
-    
+    }  
     
 }
