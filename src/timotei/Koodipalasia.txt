@@ -132,6 +132,23 @@ CREATE TABLE Smartposts(
 --	CHECK (Postcode LIKE '[0-9][0-9][0-9][0-9][0-9]')
 );
 
+CREATE TABLE Persons(
+	PersonID VARCHAR(4) NOT NULL PRIMARY KEY,
+	Etunimi VARCHAR(20),
+	Sukunimi VARCHAR(20) NOT NULL,
+	katuosoite VARCHAR(20),
+	postinumero VARCHAR(5),
+	kaupunki VARCHAR(15),
+	puhnro VARCHAR(15),
+-- Koska periytyminen ei ole tehokasta, on järkevämpi liittää kaikki ominaisuudet samaan tauluun ja jättää tyhjäksi ne, jotka eivät koske kyseistä henkilöä. 
+	ToimipisteID VARCHAR(2),
+	Stressitaso INTEGER,
+	
+	FOREIGN KEY (ToimipisteID) REFERENCES Toimipisteet(ToimipisteID),
+	
+	CHECK (PersonID LIKE 'P___'),
+	CHECK (postinumero LIKE '_____')
+);
 
 //        new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Timestamp());
 
@@ -191,3 +208,37 @@ document.goToLocation('Toikansuontie 4, 53505 LAPPEENRANTA', 'Kikkeliskoo', 'BLU
 //        System.out.println("Record into Package created successfully");
 
 INSERT INTO Paketit (PacketID, AsiakasID, TuoteID) VALUES ('I24324', 'P666', '1' );
+
+
+public Stage showCustomerDialog(Customer customer) {
+  FXMLLoader loader = new FXMLLoader(
+    getClass().getResource(
+      "customerDialog.fxml"
+    )
+  );
+
+  Stage stage = new Stage(StageStyle.DECORATED);
+  stage.setScene(
+    new Scene(
+      (Pane) loader.load()
+    )
+  );
+
+  CustomerDialogController controller = 
+    loader.<CustomerDialogController>getController();
+  controller.initData(customer);
+
+  stage.show();
+
+  return stage;
+}
+
+...
+
+class CustomerDialogController() {
+  @FXML private Label customerName;
+  void initialize() {}
+  void initData(Customer customer) {
+    customerName.setText(customer.getName());
+  }
+}

@@ -25,8 +25,9 @@ public class Shipment {
     Date sentTime = null;
     String shipmentType = null;
     Double shipmentLength = null;
+    Boolean brokenInShipment = false; 
 
-    public Shipment(String sID, String pID, String sF, String d, String sType, Date time, Double length, boolean addToDB ){
+    public Shipment(String sID, String pID, String sF, String d, String sType, Date time, Double length, Boolean broken, boolean addToDB ){
 
         shipmentID = sID;
         packetID = pID;
@@ -35,6 +36,7 @@ public class Shipment {
         shipmentType = sType;
         sentTime = time;
         shipmentLength = length;
+        brokenInShipment = broken;
                 
         
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ENGLISH);
@@ -56,7 +58,7 @@ public class Shipment {
 
             try {
                 String sql = "INSERT INTO Shipments "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?);";
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
                 stmt = c.prepareStatement(sql);
                 stmt.setString(1, sID);
@@ -66,6 +68,7 @@ public class Shipment {
                 stmt.setString(5, format.format(sentTime));
                 stmt.setString(6, sType);
                 stmt.setString(7, length.toString());
+                stmt.setBoolean(8, broken);
                 stmt.executeUpdate();
 
                 stmt.close();

@@ -33,7 +33,7 @@ public class ShipmentHandler {
     
     ArrayList<Shipment> shipmentList = new ArrayList();
     
-    public void createShipment(String packageID, String sendFrom, String destination, String shipmentType, Double length ){
+    public void createShipment(String packageID, String sendFrom, String destination, String shipmentType, Boolean broken, Double length ){
     
         String sID = null;
         String tmp = null;
@@ -49,7 +49,7 @@ public class ShipmentHandler {
         
         Date time = new java.util.Date();
         
-        shipmentList.add(new Shipment(sID, packageID, sendFrom, destination, shipmentType, time, length, true));
+        shipmentList.add(new Shipment(sID, packageID, sendFrom, destination, shipmentType, time, length, broken, true));
         
         
     }
@@ -78,9 +78,11 @@ public class ShipmentHandler {
                 String dest = rs.getString("Destination");
                 Date time = rs.getDate("Senttime");
                 String sType = rs.getString("Shipmenttype");
+                Boolean broken = rs.getBoolean("BrokenInShipment");
                 Double length = rs.getDouble("TravelLength");
+                
                         
-                shipmentList.add(new Shipment(sID, pID, from, dest, sType, time, length, false));
+                shipmentList.add(new Shipment(sID, pID, from, dest, sType, time, length, broken, false));
 
             }
             rs.close();

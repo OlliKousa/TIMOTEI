@@ -17,10 +17,15 @@ import javafx.stage.Stage;
  */
 public class TIMOTEI extends Application {
     
+    public static Stage primaryStage;
+
+    public static Parent root;
+
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
         
+        primaryStage = stage;
         Scene scene = new Scene(root);
         stage.setResizable(false);
         stage.setScene(scene);

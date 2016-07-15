@@ -19,10 +19,14 @@ public class Person {
     String postCode = null; 
     String city = null;
     String phone = null;
+    String toimipisteID = null;
+    Integer stressLevel = null; 
     
-    public Person(String pID, String fName, String lName, 
-                  String s, String pC, String ci, String p){
-        
+
+    
+    public Person(String pID, String fName, String lName,
+            String s, String pC, String ci, String p /*, String tpID, Integer sLevel*/) {
+
         personID = pID;
         firstName = fName;
         lastName = lName;
@@ -30,7 +34,9 @@ public class Person {
         postCode = pC;
         city = ci;
         phone = p;
-        
+//        toimipisteID = tpID;
+//        stressLevel = sLevel; 
+
     }
 
     public String getPersonID() {

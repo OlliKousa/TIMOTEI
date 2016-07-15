@@ -175,9 +175,12 @@ public class XMLReader {
             String sql = "INSERT INTO Smartposts"
                     + " VALUES (?, ?, ?, ?, ?, ?, ?, 'false');";
             
+            // Paloitellaan nimi pilkulla
             String[] nimiArray = nodePostoffice.getTextContent().split(",");
+            // Otetaan kaikki paitsi ensimmäinen palanen (jätetään se helvetin "PAKETTIAUTOMAATTI"-teksti pois)
             nimiArray = Arrays.copyOfRange(nimiArray, 1, nimiArray.length);
-            String nimi = Arrays.toString(nimiArray).substring(1, Arrays.toString(nimiArray).length()-1);
+            // Muutetaan array stringiksi ja poistetaan alusta turhat jutut.
+            String nimi = Arrays.toString(nimiArray).substring(2, Arrays.toString(nimiArray).length()-1);
             
             stmt = c.prepareStatement(sql);
             stmt.setString(1, nimi );

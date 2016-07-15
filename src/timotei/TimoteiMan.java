@@ -17,11 +17,11 @@ import java.sql.SQLException;
 public class TimoteiMan extends Person {
     
     String toimipisteID = null;
-    String stressLevel = null;
+    Integer stressLevel = null;
     
     
     public TimoteiMan(String pID, String fName, String lName, 
-                  String s, String pC, String ci, String p, String toimipiste, String sLevel){
+                  String s, String pC, String ci, String p, String toimipiste, int sLevel){
         
         super(pID, fName, lName, s, pC, ci, p);
         
@@ -54,7 +54,7 @@ public class TimoteiMan extends Person {
             stmt.setString(6, ci);
             stmt.setString(7, p);
             stmt.setString(8, toimipiste);
-            stmt.setString(9, sLevel);
+            stmt.setInt(9, sLevel);
             stmt.executeUpdate(sql);
 
             stmt.close();
@@ -68,7 +68,7 @@ public class TimoteiMan extends Person {
         //--------------------------    
     }
     
-    public void setStressLevel(String sLevel){
+    public void setStressLevel(int sLevel){
         stressLevel = sLevel;
         
         //-----------------------
@@ -90,7 +90,7 @@ public class TimoteiMan extends Person {
                     + "WHERE PersonID = ?;";
 
             stmt = c.prepareStatement(sql);
-            stmt.setString(1, stressLevel);
+            stmt.setInt(1, stressLevel);
             stmt.setString(2, personID);
             stmt.executeUpdate(sql);
 
@@ -110,7 +110,7 @@ public class TimoteiMan extends Person {
         return toimipisteID;
     }
 
-    public String getStressLevel() {
+    public Integer getStressLevel() {
         return stressLevel;
     }
     

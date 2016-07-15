@@ -27,7 +27,7 @@ public class Storage {
     // ------- Singleton ENDS -------
     
     ArrayList<Package> packageList = new ArrayList();
-    ArrayList<String> packageTypeList = new ArrayList();
+    ArrayList<PackageType> packageTypeList = new ArrayList();
     
     // Lisää paketin annetulla tyypillä ja omistajan ID:llä
     public void addPackage(int iType, String oID){
@@ -79,8 +79,20 @@ public class Storage {
        
     // Hakee ja palauttaa listan kaikista saatavilla olevista pakettityypeistä.
     public ArrayList<String> getPackageTypeList() {
+        ArrayList<String> packageTypeInfoList = new ArrayList();
+        
+        Iterator itr = packageTypeList.iterator();
+        while(itr.hasNext())
+            packageTypeInfoList.add(itr.next().toString());
+        
+        return packageTypeInfoList;
+    }
+
+    public ArrayList<PackageType> getPackageTypeObjectList() {
         return packageTypeList;
     }
+    
+    
     
     // Päivittää listan saatavilla olevista pakettityypeistä.
     public void updatePackageTypeList(){
@@ -105,9 +117,9 @@ public class Storage {
                 String name = rs.getString("Nimi");
                 String size = rs.getString("Koko");
                 String weight = rs.getString("Paino");
-                boolean fragile = rs.getBoolean("Fragile");
+                boolean fragile = Boolean.valueOf(rs.getString("Fragile"));
                 System.out.println("TuoteID: " + tuoteID);
-                packageTypeList.add(tuoteID + " " + name + ": " + size + " " + weight + " " + String.valueOf(fragile));
+                packageTypeList.add( new PackageType(Integer.valueOf(tuoteID), name, size, Double.valueOf(weight), fragile));
 
             }
             rs.close();
