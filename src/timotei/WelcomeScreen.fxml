@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="337.0" prefWidth="600.0" style="-fx-background-color: #F7941D;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="timotei.WelcomeScreenController">
+   <children>
+      <TextField fx:id="userNameField" layoutX="199.0" layoutY="141.0" onAction="#signInAction" />
+      <PasswordField fx:id="passwordField" layoutX="199.0" layoutY="183.0" />
+      <Button defaultButton="true" layoutX="199.0" layoutY="221.0" mnemonicParsing="false" onAction="#signInAction" prefHeight="25.0" prefWidth="149.0" text="Kirjaudu" />
+      <CheckBox fx:id="downloadDBBox" layoutX="50.0" layoutY="299.0" mnemonicParsing="false" text="Lataa tietokanta" />
+      <CheckBox fx:id="dogeIsWowBox" layoutX="430.0" layoutY="299.0" mnemonicParsing="false" text="Doge on wow" />
+      <Label layoutX="199.0" layoutY="124.0" text="Käyttäjänimi" />
+      <Label layoutX="199.0" layoutY="166.0" text="Salasana" />
+      <ImageView fitHeight="111.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@banneri.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

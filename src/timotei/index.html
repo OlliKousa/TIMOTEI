@@ -82,7 +82,7 @@ Array syötetään javascriptiin ilman ' 'merkkejä, pelkkä listan nimi riittä
   document.pathLength = function pathLength(pathArray) {
     var src = new google.maps.LatLng(pathArray[0], pathArray[1]);
     var dest = new google.maps.LatLng(pathArray[2], pathArray[3]);
-    return Math.round(google.maps.geometry.spherical.computeLength([src, dest])/1000 * 100) / 100;
+    return (google.maps.geometry.spherical.computeLength([src, dest]));
   };
   
   document.createMarker = function createMarker(lati, loni, info){

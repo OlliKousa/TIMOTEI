@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -27,7 +28,8 @@ public class Shipment {
     Double shipmentLength = null;
     Boolean brokenInShipment = false; 
 
-    public Shipment(String sID, String pID, String sF, String d, String sType, Date time, Double length, Boolean broken, boolean addToDB ){
+    public Shipment(String sID, String pID, String sF, String d, String sType, 
+            Date time, Double length, Boolean broken, boolean addToDB ){
 
         shipmentID = sID;
         packetID = pID;
@@ -54,7 +56,7 @@ public class Shipment {
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
             }
-            System.out.println("Opened database successfully");
+            System.out.println("-Opened database successfully for ADDING SHIPMENT");
 
             try {
                 String sql = "INSERT INTO Shipments "
@@ -78,7 +80,7 @@ public class Shipment {
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
             }
-            System.out.println("Records into Shipments created successfully");
+            System.out.println("Records into SHIPMENTS created successfully");
             //--------------------------
         }
     }

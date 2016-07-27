@@ -6,14 +6,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="218.0" prefWidth="544.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="timotei.ErrorAlertWindowController">
+<AnchorPane id="AnchorPane" prefHeight="218.0" prefWidth="544.0" style="-fx-background-color: F7941D;" stylesheets="@taustamuotoilu.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="timotei.ErrorAlertWindowController">
    <children>
-      <Label layoutX="45.0" layoutY="30.0" text="Seuraavat virheet tapahtuivat: ">
+      <Label layoutX="44.0" layoutY="14.0" prefHeight="35.0" prefWidth="273.0" text="Seuraavat virheet tapahtuivat: " textFill="WHITE">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="cancelButton" layoutX="254.0" layoutY="176.0" mnemonicParsing="false" onAction="#cancelAction" text="OK" />
-      <ListView fx:id="errorListView" layoutX="44.0" layoutY="69.0" prefHeight="88.0" prefWidth="453.0" />
+      <Button fx:id="cancelButton" layoutX="207.0" layoutY="176.0" mnemonicParsing="false" onAction="#cancelAction" prefHeight="25.0" prefWidth="114.0" style="-fx-background-color: ffad33;" text="OK" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <ListView fx:id="errorListView" layoutX="44.0" layoutY="56.0" prefHeight="95.0" prefWidth="453.0" style="-fx-background-color: F7941D;" />
    </children>
 </AnchorPane>

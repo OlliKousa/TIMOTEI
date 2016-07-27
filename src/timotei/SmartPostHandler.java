@@ -44,9 +44,18 @@ public class SmartPostHandler {
         // Jos löytyy, lisätään listaan
         while(itr.hasNext()){
             sp = (SmartPost)itr.next();
-            if(sp.getName().contains(search))
+            if(sp.getName().toLowerCase().contains(search.toLowerCase()))
                 matchingSmartPostList.add(sp.getName());
         }
+        
+        itr = smartPostList.iterator();
+        while (itr.hasNext()) {
+            sp = (SmartPost) itr.next();
+            if ((sp.getCity().contains(search.toUpperCase())) & (!matchingSmartPostList.contains(sp.getName()))) {
+                matchingSmartPostList.add(sp.getName());
+            }
+        }
+        
         
         return matchingSmartPostList;
     }
@@ -62,7 +71,7 @@ public class SmartPostHandler {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Opened database successfully for UPDATING SMARTPOST list");
+        System.out.println("-Opened database successfully for UPDATING SMARTPOST list");
         
         
         try {
@@ -113,6 +122,45 @@ public class SmartPostHandler {
         }
 
         return null;
+        
+    }
+    
+    public boolean isSmartPostDownloaded(){
+        int count = 0;
+        Connection c = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:timotei.sqlite3");
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        System.out.println("-Opened database successfully for CHECKING if there's SMARTPOSTS");
+
+        try {
+            c.setAutoCommit(false);
+            Statement stmt = null;
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM Smartposts;");
+            while (rs.next()) {
+                count = rs.getInt("COUNT(*)");
+                
+
+               
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        System.out.println("SMARTPOSTlist CHECKED successfully");
+        
+        if (count > 0)
+            return true;
+        else
+            return false;
         
     }
     

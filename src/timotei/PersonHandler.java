@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  *
@@ -19,7 +20,7 @@ import java.util.Iterator;
  */
 public class PersonHandler {
     
-        // Singleton-konstruktori
+    // Singleton-konstruktori
     private static PersonHandler instance = null;
     protected PersonHandler() {
         // Exists only to defeat instantiation.        
@@ -32,12 +33,13 @@ public class PersonHandler {
     }
     // -------
     
-    ArrayList<Person> personList = new ArrayList();
+    ArrayList<Customer> customerList = new ArrayList();
+    ArrayList<TimoteiMan> courierList = new ArrayList();
     
     public boolean confirmPerson(String pID){
 
         // Alustetaan iteraattori.
-        Iterator itr = personList.iterator();
+        Iterator itr = customerList.iterator();
 
         // Käydään läpi kaikki oliot ja tarkistetaan löytyykö haettu henkilö listasta
         while (itr.hasNext()) {
@@ -52,7 +54,7 @@ public class PersonHandler {
         ArrayList<Person> foundPersonList = new ArrayList();
         
         // Alustetaan iteraattori.
-        Iterator itr = personList.iterator();
+        Iterator itr = customerList.iterator();
         Person p;
 
         // Käydään läpi kaikki oliot ja tarkistetaan löytyykö haettu henkilö listasta
@@ -70,7 +72,7 @@ public class PersonHandler {
         ArrayList<Person> foundPersonList = new ArrayList();
 
         // Alustetaan iteraattori.
-        Iterator itr = personList.iterator();
+        Iterator itr = customerList.iterator();
         Person p;
 
         // Käydään läpi kaikki oliot ja tarkistetaan löytyykö haettu henkilö listasta
@@ -98,7 +100,7 @@ public class PersonHandler {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Opened database successfully for UPDATING PERSONS list");
+        System.out.println("-Opened database successfully for UPDATING PERSONS list");
 
         try {
             c.setAutoCommit(false);
@@ -117,9 +119,9 @@ public class PersonHandler {
                 Integer sLevel = rs.getInt("Stressitaso");
                 
                 if(toimipisteID.isEmpty())
-                    personList.add(new Customer(pID, fName, lName, street, pCode, city, pNro));
+                    customerList.add(new Customer(pID, fName, lName, street, pCode, city, pNro));
                 else
-                    personList.add(new TimoteiMan(pID, fName, lName, street, pCode, city, pNro, toimipisteID, sLevel));
+                    courierList.add(new TimoteiMan(pID, fName, lName, street, pCode, city, pNro, toimipisteID, sLevel));
 
             }
             rs.close();
@@ -129,7 +131,101 @@ public class PersonHandler {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("PERSONS list UPDATED successfully");
+        System.out.println("CUSTOMER and COURIER lists UPDATED successfully");
+        
+    }
+ 
+    // Arvotaan satunnainen kuriiri lähetykselle. Tarvittaessa useampi. 
+    // Parametrina kuriirien määrä, paluuarvona lista jossa haluttu määrä kuriireja. 
+    public ArrayList<TimoteiMan> getCouriers(int amount){
+        ArrayList<TimoteiMan> designatedCourierList = new ArrayList();
+        ArrayList<TimoteiMan> availableCourierList = new ArrayList();
+        availableCourierList.addAll(courierList);
+        Random rand = new Random();
+        
+        if(availableCourierList.size() >= amount){
+            for (int i = 0 ; i < amount ; i++){
+                int chosenOne = rand.nextInt(availableCourierList.size());
+                designatedCourierList.add(availableCourierList.get(chosenOne));
+                availableCourierList.remove(chosenOne);
+            }
+        }else{
+            System.out.println("Not enough couriers. They're all fired or shit.");
+            return designatedCourierList;
+        }
+        return designatedCourierList;
+    }
+    
+    public ArrayList<TimoteiMan> getCourierByID(String pID) {
+
+        ArrayList<TimoteiMan> foundPersonList = new ArrayList();
+
+        // Alustetaan iteraattori.
+        Iterator itr = courierList.iterator();
+        TimoteiMan t;
+
+        // Käydään läpi kaikki oliot ja tarkistetaan löytyykö haettu henkilö listasta
+        while (itr.hasNext()) {
+            t = (TimoteiMan) itr.next();
+            if (t.getPersonID().contains(pID)) {
+                foundPersonList.add(t);
+            }
+        }
+
+        return foundPersonList;
+    }
+
+    public ArrayList<Customer> getCustomerList() {
+        return customerList;
+    }
+
+    public ArrayList<TimoteiMan> getCourierList() {
+        return courierList;
+    }
+    
+    public TimoteiMan getThrowerOfTheMonth(){
+        TimoteiMan voittaja = null; 
+        TimoteiMan haastaja;
+        
+        Iterator itr = courierList.iterator();
+        
+        if(itr.hasNext())
+            voittaja = (TimoteiMan) itr.next();
+                
+        while (itr.hasNext()){
+            haastaja = (TimoteiMan) itr.next();
+            if( haastaja.getStressLevel() > voittaja.getStressLevel()){
+                voittaja = haastaja;
+            }
+        }
+        
+        return voittaja;
+    }
+    
+    public void fireTimoteiMan(TimoteiMan tm){
+        
+        Connection c = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:timotei.sqlite3");
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        System.out.println("-Opened database successfully for FIRING TIMOTEIMAN");
+
+        try {
+            c.setAutoCommit(false);
+            Statement stmt = null;
+            stmt = c.createStatement();
+            stmt.executeQuery("DELETE FROM Persons WHERE PersonID = '" + tm.getPersonID() + "';");
+            stmt.close();
+            c.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        System.out.println("TIMOTEIMAN FIRED successfully");
         
     }
     

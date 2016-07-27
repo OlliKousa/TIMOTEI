@@ -26,46 +26,8 @@ public class TimoteiMan extends Person {
         super(pID, fName, lName, s, pC, ci, p);
         
         toimipisteID = toimipiste;
-        stressLevel = sLevel; 
-        
-        //-----------------------
-        Connection c = null;
-        PreparedStatement stmt = null;
-        try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:timotei.sqlite3");
-            c.setAutoCommit(false);
-        } catch (ClassNotFoundException | SQLException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
-        System.out.println("Opened database successfully");
+        stressLevel = sLevel;  
 
-        try {
-            String sql = "INSERT INTO Persons "
-                    + "VALUES (?, ?, ?, ?, ?, ?);";
-
-            stmt = c.prepareStatement(sql);
-            stmt.setString(1, pID);
-            stmt.setString(2, fName);
-            stmt.setString(3, lName);
-            stmt.setString(4, s);
-            stmt.setString(5, pC);
-            stmt.setString(6, ci);
-            stmt.setString(7, p);
-            stmt.setString(8, toimipiste);
-            stmt.setInt(9, sLevel);
-            stmt.executeUpdate(sql);
-
-            stmt.close();
-            c.commit();
-            c.close();
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
-        System.out.println("Record into Person created successfully");
-        //--------------------------    
     }
     
     public void setStressLevel(int sLevel){
@@ -82,7 +44,7 @@ public class TimoteiMan extends Person {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Opened database successfully");
+        System.out.println("-Opened database successfully for updating STRESS LEVEL");
 
         try {
             String sql = "UPDATE Persons "
@@ -101,7 +63,7 @@ public class TimoteiMan extends Person {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Record into Person created successfully");
+        System.out.println("STRESS LEVEL UPDATED successfully");
         //-------------------------- 
         
     }

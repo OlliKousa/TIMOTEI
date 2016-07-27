@@ -102,7 +102,7 @@ public class ReclamationHandler {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Opened database successfully for UPDATING RECLAMATIONS list");
+        System.out.println("-Opened database successfully for UPDATING RECLAMATIONS list");
 
         try {
             c.setAutoCommit(false);

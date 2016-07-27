@@ -1,55 +1,41 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Class NAME: ErrorAlertWindowController
+ * Created BY: Olli Kousa
+ * Creation DATE: 15.7.2016
+ * Last MODIFIED: 21.7.2016
+ * Purpose of the class is to hold functionalities of window that notifies user of possible errors.
+ * Class is opened and controlled by method "showError()" which intializes the window with the relevant info to be shown to user. 
+ * User can close the window and continue using the program after viewing the info. 
  */
+
 package timotei;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
  *
  * @author Kousa
  */
-
-
-
-
     
 public class ErrorAlertWindowController implements Initializable {
-
-
+    
     @FXML
     private ListView<String> errorListView;
-
     @FXML
     private Button cancelButton;
-
     ArrayList<String> erroriLista = new ArrayList();
-    
-    
-    void initialize() {
-    }
 
+    // initData adds info or errormessages to the ListView-component. 
     void initData(ArrayList<String> error) {
         Iterator itr = error.iterator();
         while (itr.hasNext()) {
@@ -58,15 +44,16 @@ public class ErrorAlertWindowController implements Initializable {
     }
 
     @Override
+    // initialize doesn't do anything. Data is easier to init in different method.
     public void initialize(URL location, ResourceBundle resources) {
     }
 
     @FXML
+    // cancelAction closes the window and lets the user to continue using the program.
     private void cancelAction(ActionEvent event) {
         System.out.println("Shiiit.");
         ((Stage) cancelButton.getScene().getWindow()).close();
     }
-
 }
 
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="393.0" prefWidth="397.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="timotei.DogeController">
+   <children>
+      <ImageView fx:id="dogeImage" fitHeight="409.0" fitWidth="610.0" layoutX="-12.0" layoutY="-10.0" onMouseClicked="#dogeMouseClicked" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@264px-Doge_(1).jpg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

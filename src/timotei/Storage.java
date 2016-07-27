@@ -46,7 +46,7 @@ public class Storage {
             
         }
         
-        packageList.add(new Package(iType, oID, pID, true));
+        packageList.add(new Package(iType, oID, pID, new java.util.Date(), false, true));
         
     }
     
@@ -73,8 +73,18 @@ public class Storage {
         return p;
     }
     
-    public ArrayList<Package> getPackageList() {
-        return packageList;
+    public ArrayList<Package> getPackageList(java.util.Date dateLimit) {
+        
+        ArrayList<Package> showPackageList = new ArrayList();
+
+        Iterator itr = packageList.iterator();
+        Package p;
+        while (itr.hasNext()) {
+           p = (Package) itr.next();
+           if(p.getCreationTime().after(dateLimit) && !p.isRemoved())
+               showPackageList.add(p);          
+        }
+        return showPackageList;
     }
        
     // Hakee ja palauttaa listan kaikista saatavilla olevista pakettityypeistä.
@@ -91,8 +101,6 @@ public class Storage {
     public ArrayList<PackageType> getPackageTypeObjectList() {
         return packageTypeList;
     }
-    
-    
     
     // Päivittää listan saatavilla olevista pakettityypeistä.
     public void updatePackageTypeList(){
@@ -118,7 +126,6 @@ public class Storage {
                 String size = rs.getString("Koko");
                 String weight = rs.getString("Paino");
                 boolean fragile = Boolean.valueOf(rs.getString("Fragile"));
-                System.out.println("TuoteID: " + tuoteID);
                 packageTypeList.add( new PackageType(Integer.valueOf(tuoteID), name, size, Double.valueOf(weight), fragile));
 
             }
@@ -146,7 +153,7 @@ public class Storage {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Opened database successfully for UPDATING PACKAGES list");
+        System.out.println("-Opened database successfully for UPDATING PACKAGES list");
 
         try {
             c.setAutoCommit(false);
@@ -157,8 +164,10 @@ public class Storage {
                 String packetID = rs.getString("PacketID");
                 String ownerID = rs.getString("AsiakasID");
                 String packetType = rs.getString("TuoteID");
+                Date creationTime = rs.getDate("CreationDate");
+                boolean removed = rs.getBoolean("Poistettu");
                 
-                packageList.add(new Package(Integer.parseInt(packetType), ownerID, packetID, false));
+                packageList.add(new Package(Integer.parseInt(packetType), ownerID, packetID, creationTime, removed, false));
 
             }
             rs.close();
@@ -168,11 +177,11 @@ public class Storage {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Package list updated successfully");
+        System.out.println("PACKAGE list updated successfully");
         
     }
     
-    public void removePackage(String pID){
+    public void removePackage(String pID, boolean removeCascade){
         
         Package p = null;
 
@@ -184,31 +193,61 @@ public class Storage {
             if (p.getPacketID().contains(pID)) {
                 packageList.remove(p);
                 
-                try {
-                    Connection c = null;
-                    PreparedStatement stmt;
-                    Class.forName("org.sqlite.JDBC");
-                    c = DriverManager.getConnection("jdbc:sqlite:timotei.sqlite3");
-                    c.setAutoCommit(false);
-                    System.out.println("Opened database successfully for DELETING PACKAGE");
-
-                    String sql = "DELETE FROM Paketit "
-                            + "WHERE PacketID = ? ;";
-                    stmt = c.prepareStatement(sql);
-
-                    stmt.setString(1, pID);
-
-                    stmt.executeUpdate();
+                if(removeCascade){
                     
-                    stmt.close();
-                    c.commit();
-                    c.close();
-                } catch (ClassNotFoundException | SQLException e) {
-                    System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                    System.exit(0);
+                    try {
+                        Connection c = null;
+                        PreparedStatement stmt;
+                        Class.forName("org.sqlite.JDBC");
+                        c = DriverManager.getConnection("jdbc:sqlite:timotei.sqlite3");
+                        c.setAutoCommit(false);
+                        System.out.println("-Opened database successfully for DELETING PACKAGE");
+                        
+                        String sql = "DELETE FROM Paketit "
+                                + "WHERE PacketID = ? ;";
+                        stmt = c.prepareStatement(sql);
+                        
+                        stmt.setString(1, pID);
+                        
+                        stmt.executeUpdate();
+
+                        stmt.close();
+                        c.commit();
+                        c.close();
+                    } catch (ClassNotFoundException | SQLException e) {
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                    }
+                    
+                    System.out.println("Records DELETED successfully");
+                    
+                }else{
+                    
+                    try {
+                        Connection c = null;
+                        PreparedStatement stmt;
+                        Class.forName("org.sqlite.JDBC");
+                        c = DriverManager.getConnection("jdbc:sqlite:timotei.sqlite3");
+                        c.setAutoCommit(false);
+                        System.out.println("-Opened database successfully for MARKING PACKAGE DELETED");
+                        
+                        String sql = "UPDATE Paketit SET Poistettu = ? "
+                                + "WHERE PacketID = ?;";
+                        stmt = c.prepareStatement(sql);
+                        
+                        stmt.setBoolean(1, true);
+                        stmt.setString(2, pID);
+                        
+                        stmt.executeUpdate();
+
+                        stmt.close();
+                        c.commit();
+                        c.close();
+                    } catch (ClassNotFoundException | SQLException e) {
+                        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                    }
+                    System.out.println("PACKAGE MARKED 'DELETED' successfully");
+                    
                 }
-                System.out.println("Records DELETED successfully");
-                
                 return;
             }
         }
