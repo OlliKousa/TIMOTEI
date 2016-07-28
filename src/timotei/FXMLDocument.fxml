@@ -20,29 +20,28 @@
 
 <AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1162.0" prefHeight="800.0" prefWidth="1162.0" scaleShape="false" stylesheets="@taustamuotoilu.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="timotei.FXMLDocumentController">
    <children>
-      <TabPane fx:id="tabPane" layoutY="103.0" prefHeight="697.0" prefWidth="1162.0" style="-fx-background-color: #F7941D;" stylesheets="@tabimuotoilu.css" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPane" layoutY="110.0" prefHeight="697.0" prefWidth="1162.0" style="-fx-background-color: #F7941D;" stylesheets="@tabimuotoilu.css" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab closable="false" text="Kartta">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #F7941D;" stylesheets="@taustamuotoilu.css">
                      <children>
                         <Separator layoutX="759.0" orientation="VERTICAL" prefHeight="668.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="759.0" AnchorPane.topAnchor="0.0" />
-                        <TextField fx:id="addToMapSearch" layoutX="786.0" layoutY="37.0" onKeyReleased="#addToMapSearchKeyReleased" prefWidth="150.0" promptText="Search smartpost" />
-                        <Button fx:id="addToMapButton" layoutX="980.0" layoutY="37.0" mnemonicParsing="false" onAction="#addToMapAction" prefHeight="25.0" prefWidth="80.0" text="Add to map" />
-                        <Button fx:id="clearMapButton" layoutX="980.0" layoutY="62.0" mnemonicParsing="false" onAction="#clearMapAction" prefHeight="25.0" prefWidth="80.0" text="Clear map" />
-                        <TextField fx:id="sendFromSearch" layoutX="782.0" layoutY="202.0" onKeyReleased="#sendFromKeyReleased" prefWidth="150.0" promptText="Search smartpost" />
-                        <TextField fx:id="destinationSearch" layoutX="969.0" layoutY="202.0" onKeyReleased="#destinationKeyReleased" prefWidth="150.0" promptText="Search smartpost" />
-                        <Label layoutX="789.0" layoutY="170.0" text="Send from" />
-                        <Label layoutX="969.0" layoutY="170.0" text="Destination" />
+                        <Button fx:id="addSendToMapButton" layoutX="783.0" layoutY="314.0" mnemonicParsing="false" onAction="#addSendToMapAction" prefHeight="25.0" prefWidth="160.0" stylesheets="@nappimuotoilu.css" text="Add to map" />
+                        <Button fx:id="clearMapButton" layoutX="1068.0" layoutY="14.0" mnemonicParsing="false" onAction="#clearMapAction" prefHeight="25.0" prefWidth="80.0" stylesheets="@nappimuotoilu.css" text="Clear map" />
+                        <TextField fx:id="sendFromSearch" layoutX="780.0" layoutY="62.0" onKeyReleased="#sendFromKeyReleased" prefHeight="25.0" prefWidth="164.0" promptText="Search smartpost" />
+                        <TextField fx:id="destinationSearch" layoutX="957.0" layoutY="62.0" onKeyReleased="#destinationKeyReleased" prefHeight="25.0" prefWidth="163.0" promptText="Search smartpost" />
+                        <Label layoutX="790.0" layoutY="45.0" text="Send from" />
+                        <Label layoutX="963.0" layoutY="45.0" text="Destination" />
                         <ListView fx:id="availablePacketsListView" layoutX="791.0" layoutY="383.0" onMouseClicked="#availablePacketsMouseClicked" prefHeight="144.0" prefWidth="141.0" />
                         <ListView fx:id="sendPacketsInfoListView" layoutX="952.0" layoutY="383.0" prefHeight="143.0" prefWidth="179.0" />
-                        <Button fx:id="sendShipmentButton" layoutX="794.0" layoutY="574.0" mnemonicParsing="false" onAction="#sendShipmentAction" prefHeight="59.0" prefWidth="338.0" text="Send shipment" />
+                        <Button fx:id="sendShipmentButton" layoutX="794.0" layoutY="574.0" mnemonicParsing="false" onAction="#sendShipmentAction" prefHeight="59.0" prefWidth="338.0" stylesheets="@nappimuotoilu.css" text="Send shipment" />
                         <WebView fx:id="webviewComponent" layoutX="-1.0" layoutY="1.0" prefHeight="668.0" prefWidth="761.0" />
                         <ComboBox fx:id="shipmentTypeCombo" layoutX="798.0" layoutY="542.0" prefHeight="25.0" prefWidth="321.0" promptText="ShipmentType" />
                         <Label fx:id="shipmentSentLabel" layoutX="804.0" layoutY="633.0" text="Label" />
-                        <ListView fx:id="sendFromListView" layoutX="778.0" layoutY="236.0" onMouseClicked="#sendFromListMouseClicked" prefHeight="127.0" prefWidth="164.0" />
-                        <ListView fx:id="destinationListView" layoutX="962.0" layoutY="236.0" onMouseClicked="#destinationListMouseClicked" prefHeight="127.0" prefWidth="164.0" />
-                        <ListView fx:id="addToMapListView" layoutX="778.0" layoutY="70.0" prefHeight="85.0" prefWidth="165.0" />
+                        <ListView fx:id="sendFromListView" layoutX="780.0" layoutY="90.0" onMouseClicked="#sendFromListMouseClicked" prefHeight="222.0" prefWidth="164.0" />
+                        <ListView fx:id="destinationListView" layoutX="957.0" layoutY="90.0" onMouseClicked="#destinationListMouseClicked" prefHeight="222.0" prefWidth="164.0" />
+                        <Button fx:id="addToMapButton1" layoutX="958.0" layoutY="314.0" mnemonicParsing="false" onAction="#addDestToMapAction" prefHeight="25.0" prefWidth="160.0" stylesheets="@nappimuotoilu.css" text="Add to map" />
                      </children>
                   </AnchorPane>
             </content>
@@ -70,12 +69,12 @@
                            </font>
                         </Label>
                         <Label layoutX="602.0" layoutY="379.0" text="Paketin tiedot" />
-                        <Button fx:id="acceptAndAddButton" layoutX="602.0" layoutY="512.0" mnemonicParsing="false" onAction="#acceptAndAddAction" prefHeight="81.0" prefWidth="526.0" text="Hyväksy ja lisää">
+                        <Button fx:id="acceptAndAddButton" layoutX="602.0" layoutY="512.0" mnemonicParsing="false" onAction="#acceptAndAddAction" prefHeight="81.0" prefWidth="526.0" stylesheets="@nappimuotoilu.css" text="Hyväksy ja lisää">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Button>
-                        <Button fx:id="removePacketButton" layoutX="106.0" layoutY="568.0" mnemonicParsing="false" onAction="#removePacketAction" prefHeight="55.0" prefWidth="118.0" text="Poista" />
+                        <Button fx:id="removePacketButton" layoutX="106.0" layoutY="568.0" mnemonicParsing="false" onAction="#removePacketAction" prefHeight="55.0" prefWidth="118.0" stylesheets="@nappimuotoilu.css" text="Poista" />
                         <ListView fx:id="packetInfoListView" layoutX="602.0" layoutY="419.0" prefHeight="73.0" prefWidth="542.0" />
                         <Label fx:id="ownerFoundLabel" layoutX="895.0" layoutY="307.0" prefHeight="20.0" prefWidth="132.0" text="Löytyykö omistajaa?">
                            <font>
@@ -87,7 +86,6 @@
                         <TextField fx:id="packetOwnerName" layoutX="903.0" layoutY="135.0" onKeyReleased="#addOwnerByNameAction" promptText="Omistajan nimi" />
                         <ListView fx:id="foundOwnerList" layoutX="878.0" layoutY="179.0" prefHeight="125.0" prefWidth="209.0" />
                         <ListView fx:id="storagePacketInfoListView" layoutX="34.0" layoutY="375.0" prefHeight="184.0" prefWidth="453.0" />
-                        <CheckBox fx:id="removeCascadeCheckBox" layoutX="108.0" layoutY="632.0" mnemonicParsing="false" text="Poista pakettiin liittyvät lähetykset ja reklamaatiot" />
                      </children>
                   </AnchorPane>
             </content>
@@ -109,7 +107,7 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <Button fx:id="makeReclamationButton" layoutX="616.0" layoutY="347.0" mnemonicParsing="false" onAction="#makeReclamationAction" text="Tee reglamaadio?" />
+                        <Button fx:id="makeReclamationButton" layoutX="616.0" layoutY="347.0" mnemonicParsing="false" onAction="#makeReclamationAction" stylesheets="@nappimuotoilu.css" text="Tee reglamaadio?" />
                      </children>
                   </AnchorPane>
             </content>
@@ -130,7 +128,7 @@
                            </font>
                         </Label>
                         <TextField fx:id="reclamationShipmentSearch" layoutX="659.0" layoutY="133.0" promptText="LähetysID" />
-                        <Button fx:id="checkShipmentButton" layoutX="838.0" layoutY="133.0" mnemonicParsing="false" onAction="#checkShipmentAction" prefHeight="18.0" prefWidth="150.0" text="Tarkista lähetysID" />
+                        <Button fx:id="checkShipmentButton" layoutX="838.0" layoutY="133.0" mnemonicParsing="false" onAction="#checkShipmentAction" prefHeight="18.0" prefWidth="150.0" stylesheets="@nappimuotoilu.css" text="Tarkista lähetysID" />
                         <Label fx:id="shipmentIDFoundLabel" layoutX="659.0" layoutY="167.0" prefHeight="25.0" prefWidth="151.0" text="LähetysID OK/NOT " />
                         <Label layoutX="659.0" layoutY="259.0" prefHeight="35.0" prefWidth="169.0" text="Anna lisätietoja">
                            <font>
@@ -144,7 +142,7 @@
                            </font>
                         </CheckBox>
                         <Separator layoutX="550.0" layoutY="58.0" orientation="VERTICAL" prefHeight="668.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="578.0" AnchorPane.topAnchor="0.0" />
-                        <Button layoutX="873.0" layoutY="602.0" mnemonicParsing="false" onAction="#sendReclamation" text="Lähetä" />
+                        <Button layoutX="873.0" layoutY="602.0" mnemonicParsing="false" onAction="#sendReclamation" stylesheets="@nappimuotoilu.css" text="Lähetä" />
                         <Label fx:id="reclamationSentLabel" layoutX="974.0" layoutY="594.0" prefHeight="46.0" prefWidth="109.0" text="Label" />
                      </children>
                   </AnchorPane>
@@ -184,7 +182,7 @@
                         <ComboBox fx:id="statisticTypeComboBox" layoutX="602.0" layoutY="87.0" prefWidth="150.0" promptText="Näytettävä tilasto" />
                         <ListView fx:id="statisticListView" layoutX="602.0" layoutY="169.0" prefHeight="211.0" prefWidth="521.0" />
                         <Separator layoutX="536.0" layoutY="80.0" orientation="VERTICAL" prefHeight="668.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="578.0" AnchorPane.topAnchor="0.0" />
-                        <Button fx:id="showStatisticButton" layoutX="885.0" layoutY="100.0" mnemonicParsing="false" onAction="#showStatisticAction" prefHeight="42.0" prefWidth="132.0" text="Show that shit! " />
+                        <Button fx:id="showStatisticButton" layoutX="885.0" layoutY="100.0" mnemonicParsing="false" onAction="#showStatisticAction" prefHeight="42.0" prefWidth="132.0" stylesheets="@nappimuotoilu.css" text="Show that shit! " />
                         <ListView fx:id="statisticLongListView" layoutX="14.0" layoutY="31.0" prefHeight="617.0" prefWidth="543.0" />
                      </children>
                   </AnchorPane>

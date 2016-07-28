@@ -51,7 +51,6 @@ public class FXMLDocumentController implements Initializable {
     
     
     
-    @FXML
     private TextField addToMapSearch;
     private ComboBox<String> addToMapCombo;
     @FXML
@@ -104,8 +103,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private ListView<String> storagePacketInfoListView;
     @FXML
-    private Button addToMapButton;
-    @FXML
     private Button clearMapButton;
     @FXML
     private Button sendShipmentButton;
@@ -133,7 +130,6 @@ public class FXMLDocumentController implements Initializable {
     private ComboBox<String> statisticTypeComboBox;
     @FXML
     private ListView<String> statisticListView;
-    @FXML
     private ListView<String> addToMapListView;
     @FXML
     private Button showStatisticButton;
@@ -147,6 +143,10 @@ public class FXMLDocumentController implements Initializable {
     private Label reclamationSentLabel;
     @FXML
     private ListView<String> throwerMonthListView;
+    @FXML
+    private Button addSendToMapButton;
+    @FXML
+    private Button addToMapButton1;
     
     // Creating all the handlers for different classes. 
     SmartPostHandler sph = new SmartPostHandler();
@@ -157,6 +157,7 @@ public class FXMLDocumentController implements Initializable {
     LogOperator logOperator = new LogOperator();
 
     java.util.Date dateLimit;
+
 
     
     public void initData(boolean useDB){
@@ -204,8 +205,7 @@ public class FXMLDocumentController implements Initializable {
         // Set shipmentType value to not null.
         shipmentTypeCombo.setValue("Valitse lähetystyyppi");
 
-        // Update persons from DB (only once per run, it's only possible to add persons through DB)
-        personHandler.updatePersonList();
+
 
         // Update shipmentlist from database 
         shipHandler.updateShipmentList();
@@ -231,8 +231,6 @@ public class FXMLDocumentController implements Initializable {
 // --------------------------------------------------------------------
 // FUNCTIONALITIES OF THE MAP-TAB
     
-    @FXML
-    // Search for smartposts matching the given string. 
     // Results will include matches in name or city of the smartpost. 
     private void addToMapSearchKeyReleased(KeyEvent event) {
         addToMapListView.getItems().clear();
@@ -277,13 +275,13 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     // Adds selected smartpost to the map through javascript-interface. 
     // Also adds opening hours and address of the smartpost that can be opened by clicking the point.
-    private void addToMapAction(ActionEvent event) throws SQLException {
+    private void addSendToMapAction(ActionEvent event) throws SQLException {
 
         String parameter1 = null;
         String parameter2 = null;
         String parameter3 = null;
         SmartPost sp;
-        sp = sph.getSmartPostByName(addToMapListView.getSelectionModel().getSelectedItem());
+        sp = sph.getSmartPostByName(sendFromListView.getSelectionModel().getSelectedItem());
 
         // Coordinates - Latitude
         parameter1 = sp.getGp().getLat();
@@ -297,6 +295,29 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
+    @FXML
+    // See previous
+    private void addDestToMapAction(ActionEvent event) throws SQLException {
+
+        String parameter1 = null;
+        String parameter2 = null;
+        String parameter3 = null;
+        SmartPost sp;
+        sp = sph.getSmartPostByName(destinationListView.getSelectionModel().getSelectedItem());
+
+        // Coordinates - Latitude
+        parameter1 = sp.getGp().getLat();
+        // Coordinates - Longitude
+        parameter2 = sp.getGp().getLng();
+        // Info (Address + Opening hours)
+        parameter3 = sp.getName() + "   Avoinna: " + sp.getOpenhours();
+        
+        String script = "document.createMarker('" + parameter1 + "', '" + parameter2 + "', '"
+                + parameter3 + "')";
+        webviewComponent.getEngine().executeScript(script);
+
+    }
+    
     @FXML
     // Clears all points and routes from the map.
     private void clearMapAction(ActionEvent event) throws IOException {
@@ -370,7 +391,8 @@ public class FXMLDocumentController implements Initializable {
                     
                     speed = 0.3;
                     color = "RED";
-                    if(couriers.addAll(personHandler.getCouriers(4))){
+                    couriers.addAll(personHandler.getCouriers(1));
+                    if(!couriers.isEmpty()){
                         okToSend = true;
                         
                         // Also if item is fragile, it can be broken due to the high-speed nature of the shipmenttype. 
@@ -397,43 +419,56 @@ public class FXMLDocumentController implements Initializable {
                 if((storage.findPackage(availablePacketsListView.getSelectionModel().getSelectedItem()).getItemType()) == 7){
                     errorText.add("Paketti on liian iso ja rikkoutuisi lähetyksessä");
                 }else{
-                    speed = 1;
-                    color = "YELLOW";
-                    okToSend = true;
                     couriers.addAll(personHandler.getCouriers(2));
-                    // There's also a small chance of breaking the shipment in second type. 
-                    // The chance is again counted from the stresslevel but now so that a courier that is not stressed wont break the shipment.
-                    if (pt.isItemIsFragile() && Math.random() >  ( (1.0)/( ( couriers.get(0).getStressLevel()/5 ) + 0.8 ) )) {
-                        shipmentBroke = true;
-                        errorText.add("Se sun paketti meni sitte paskaks. Tsooriii!");
+                    if(!couriers.isEmpty()){
+                        speed = 1;
+                        color = "YELLOW";
+                        okToSend = true;
+                        
+                    
+                        // There's also a small chance of breaking the shipment in second type. 
+                        // The chance is again counted from the stresslevel but now so that a courier that is not stressed wont break the shipment.
+                        if (pt.isItemIsFragile() && Math.random() >  ( (1.0)/( ( couriers.get(0).getStressLevel()/5 ) + 0.8 ) )) {
+                            shipmentBroke = true;
+                            errorText.add("Se sun paketti meni sitte paskaks. Tsooriii!");
+                        }else{
+                            couriers.get(0).setStressLevel(couriers.get(0).getStressLevel() + 1);
+                        }
+                    }else{
+                        errorText.add("Ei kuriireja saatavilla. Kaikki ovat todennäköisesti saaneet potkut");
                     }
                 }
                 break;
                 // END of case 2
                         
             case "3":
-                speed = 4;
-                color = "GREEN";
-                System.out.println("Nyt viskellään!");
-                okToSend = true;
                 couriers.addAll(personHandler.getCouriers(1));
+                if(!couriers.isEmpty()){
+                    speed = 4;
+                    color = "GREEN";
+                    System.out.println("Nyt viskellään!");
+                    okToSend = true;
+                   
                 
-                if(pt.isItemIsFragile()){     
-                    if (Math.random() > ((0.2)/couriers.get(0).getStressLevel())) {
-                        shipmentBroke = true;
-                        System.out.println("Se meni sitte paskaks. Onks nyt hyvä mieli?!");
-                        // Koska kyseessä on stressinpurkupaketti,
-                        couriers.get(0).setStressLevel(1);
-                    }else{
-                        System.out.println("Kuin ihmeen kaupalla paketti säilyi ehjänä. ");
-                    }
-                    System.out.println("Pakettinne särkyi.. Timotei-miehellä oli huono päivä.");
-                }else if (pt.getItemName().contains("Nokia")){
-                    errorText.add("Lähetitte sitte nokian fedex-pakettina... ");
-                    errorText.add("Kuriiri vähän viskeli, rikkoi sillä tiiliseinän ja sai potkut.");
-                    errorText.add("ONKO NYT HYVÄ MIELI MITÄ?!");
-                    personHandler.fireTimoteiMan(couriers.get(0));
-                }                
+                    if(pt.isItemIsFragile()){     
+                        if (Math.random() > ((0.2)/couriers.get(0).getStressLevel())) {
+                            shipmentBroke = true;
+                            System.out.println("Se meni sitte paskaks. Onks nyt hyvä mieli?!");
+                            // Koska kyseessä on stressinpurkupaketti,
+                            couriers.get(0).setStressLevel(1);
+                        }else{
+                            System.out.println("Kuin ihmeen kaupalla paketti säilyi ehjänä. ");
+                        }
+                        System.out.println("Pakettinne särkyi.. Timotei-miehellä oli huono päivä.");
+                    }else if (pt.getItemName().contains("Nokia")){
+                        errorText.add("Lähetitte sitte nokian fedex-pakettina... ");
+                        errorText.add("Kuriiri vähän viskeli, rikkoi sillä tiiliseinän ja sai potkut.");
+                        errorText.add("ONKO NYT HYVÄ MIELI MITÄ?!");
+                        personHandler.fireTimoteiMan(couriers.get(0));
+                    }                
+                }else{
+                    errorText.add("Ei kuriireja saatavilla. Kaikki ovat todennäköisesti saaneet potkut");
+                }
                 break;
             default:
                 // If for some reason shipmenttype cannot be acquired there's a terminal print. 
@@ -455,6 +490,8 @@ public class FXMLDocumentController implements Initializable {
             
             sendPacketsInfoListView.getItems().clear();
         
+            storage.removePackage(availablePacketsListView.getSelectionModel().getSelectedItem(), false);
+            
             update();
             
         // If there's errors, they're shown. 
@@ -539,7 +576,7 @@ public class FXMLDocumentController implements Initializable {
         if(!storageListView.getSelectionModel().isEmpty()){
             // Remove package with given ID and type of removal. 
             storage.removePackage(storageListView.getSelectionModel().getSelectedItem().substring(0, 6), 
-                                  removeCascadeCheckBox.isSelected());
+                                  false);
             update();
         }
     }
@@ -645,6 +682,7 @@ public class FXMLDocumentController implements Initializable {
             String courier1 = shipmentCouriers.get(0) + ": " 
                         + personHandler.getCourierByID(shipmentCouriers.get(0)).get(0).getFirstName() + " " 
                         + personHandler.getCourierByID(shipmentCouriers.get(0)).get(0).getLastName() ;
+            eventInfoListView.getItems().add("Rikkinäinen: "+ shipment.brokenInShipment);
             eventInfoListView.getItems().add("Courier:\t\t  " + courier1);
             
             if(shipmentCouriers.size()>1){
@@ -763,6 +801,9 @@ public class FXMLDocumentController implements Initializable {
             reclamationListView.getItems().add((itr.next()).toString());
         }
         
+        // Update persons from DB
+        personHandler.updatePersonList();
+        
         // Updating courier-list. 
         itr = personHandler.getCourierList().iterator();
         employeeStressListView.getItems().clear();
@@ -774,6 +815,7 @@ public class FXMLDocumentController implements Initializable {
                                                 + pe.getLastName() + "\t Stressitaso:" 
                                                 + pe.getStressLevel().toString());
         }
+        throwerMonthListView.getItems().clear();
         TimoteiMan tm = personHandler.getThrowerOfTheMonth();
         throwerMonthListView.getItems().add("Nimi: " + tm.getFirstName() + " " + tm.getLastName());
         throwerMonthListView.getItems().add("Stressitaso: " + tm.getStressLevel() );

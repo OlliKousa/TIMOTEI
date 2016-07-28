@@ -54,7 +54,7 @@ public class TimoteiMan extends Person {
             stmt = c.prepareStatement(sql);
             stmt.setInt(1, stressLevel);
             stmt.setString(2, personID);
-            stmt.executeUpdate(sql);
+            stmt.executeUpdate();
 
             stmt.close();
             c.commit();

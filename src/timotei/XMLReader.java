@@ -122,7 +122,7 @@ public class XMLReader {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Opened database successfully for INSERTING SMARTPOSTS");
+        System.out.println("-Opened database successfully for INSERTING SMARTPOSTS");
         
         PreparedStatement stmt = null;
         

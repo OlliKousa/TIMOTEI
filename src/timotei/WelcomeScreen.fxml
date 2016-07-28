@@ -14,7 +14,7 @@
       <TextField fx:id="userNameField" layoutX="199.0" layoutY="141.0" onAction="#signInAction" />
       <PasswordField fx:id="passwordField" layoutX="199.0" layoutY="183.0" />
       <Button defaultButton="true" layoutX="199.0" layoutY="221.0" mnemonicParsing="false" onAction="#signInAction" prefHeight="25.0" prefWidth="149.0" text="Kirjaudu" />
-      <CheckBox fx:id="downloadDBBox" layoutX="50.0" layoutY="299.0" mnemonicParsing="false" text="Lataa tietokanta" />
+      <CheckBox fx:id="downloadDBBox" layoutX="50.0" layoutY="299.0" mnemonicParsing="false" selected="true" text="Lataa tietokanta" />
       <CheckBox fx:id="dogeIsWowBox" layoutX="430.0" layoutY="299.0" mnemonicParsing="false" text="Doge on wow" />
       <Label layoutX="199.0" layoutY="124.0" text="Käyttäjänimi" />
       <Label layoutX="199.0" layoutY="166.0" text="Salasana" />

@@ -91,7 +91,8 @@ public class PersonHandler {
     }
     
     public void updatePersonList(){
-        
+        customerList.clear();
+        courierList.clear();
         Connection c = null;
         try {
             Class.forName("org.sqlite.JDBC");
@@ -218,8 +219,9 @@ public class PersonHandler {
             c.setAutoCommit(false);
             Statement stmt = null;
             stmt = c.createStatement();
-            stmt.executeQuery("DELETE FROM Persons WHERE PersonID = '" + tm.getPersonID() + "';");
+            stmt.executeUpdate("DELETE FROM Persons WHERE PersonID = '" + tm.getPersonID() + "';");
             stmt.close();
+            c.commit();
             c.close();
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
